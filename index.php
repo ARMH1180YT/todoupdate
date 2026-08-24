@@ -60,6 +60,8 @@ private $todolist = [];
             $this->hapus($this->todolist);
         }
         else if ($select == 5) {
+            echo"sampai jumpa";
+            sleep(2);
             exit;
         }
     }

@@ -1,30 +1,37 @@
 <?php
 trait TambahTrait {
-    function tambah(&$todolist) {
+    function tambah() {
+        if (empty($this->user) || !isset($this->user['id'])) {
+            echo "\n[--eRrOr--] Kamu belum login\n";
+            echo "Silakan login terlebih dahulu\n";
+            sleep(2);
+            return;
+        }
+
         system('cls');
         echo "=====================================\n";
         echo "|            Tambah Data            | \n";
         echo "=====================================\n";
-        echo "tekan ENTER untuk keluar\n";
+        echo "klik enter atau ketik 0 untuk keluar\n\n";
 
-        // membuat judul dan deskripsi
         echo "JUDUL: ";
         $judul = trim(fgets(STDIN));
         if ($judul == '' || $judul == '0') {
             return;
-        }
-
+    }
         echo "deskripsi: ";
         $deskripsi = trim(fgets(STDIN));
         if ($deskripsi == '' || $deskripsi == '0') {
-
             return;
         }
 
-        $todolist[] = ['title' => $judul, 'message' => $deskripsi];
-        echo "\n";
-    }
+        $sql = "INSERT INTO todolist (user_id, title, message) VALUES (?, ?, ?)";
+        $statment = $this->db->prepare($sql);
+        $statment->execute([$this->user['id'], $judul, $deskripsi]);
 
+        echo "\nberhasil di tambah cuyyy\n";
+        sleep(1);
+    }
 }
 
 

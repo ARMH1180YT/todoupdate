@@ -1,6 +1,6 @@
 <?php
 trait HapusTrait {
-    function hapus(&$todolist) {
+    function hapus() {
         system('cls');
         echo "=====================================\n";
         echo "|            hapus Data             | \n";
@@ -9,9 +9,9 @@ trait HapusTrait {
         // for ($list = 0; $list < count($todolist); $list += 1) {
         //     echo $list + 1 . ". " . $todolist[$list]['title'] . "\n";
         // }
-        for ($list = 0; $list < count($todolist); $list += 1) {
-            echo $list + 1 . ". " . $todolist[$list]['title'] . PHP_EOL;
-        }
+        for ($list = 0; $list < count($this->todolist); $list += 1) {
+                    echo $list + 1 . ". " . $this->todolist[$list]['title'] . "\n";
+         }
 
         echo "\n";
         echo "Pilih nomer untuk menghapus : ";
@@ -19,10 +19,16 @@ trait HapusTrait {
         if ($delete == '0' || $delete == '') {
             return;
         }
-        $delete = $delete - 1;
-        if (isset($todolist[$delete])) {
-            unset($todolist[$delete]);
-            $todolist = array_values($todolist);
+        $index = $delete - 1;
+        if (isset($this->todolist[$index])) {
+            $idDatabase = $this->todolist[$index]['id'];
+        $sql = "DELETE FROM todolist WHERE id = ?";
+        $statment = $this->db->prepare($sql);
+        $statment->execute([$idDatabase]);
+
+        echo "berhasil dihapus cuy  \n";
+        sleep(1);
+
         }
     }
 

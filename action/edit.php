@@ -1,25 +1,27 @@
 <?php
 trait EditTrait {
-    function edit(&$todolist) {
+    function edit() {
         system('cls');
         echo "=====================================\n";
         echo "|            Edit Data              | \n";
         echo "=====================================\n";
         echo "List : \n";
 
-        for ($list = 0; $list < count($todolist); $list += 1) {
-            echo $list + 1 . ". " . $todolist[$list]['title'] . "\n";
-        }
+        for ($list = 0; $list < count($this->todolist); $list += 1) {
+                    echo $list + 1 . ". " . $this->todolist[$list]['title'] . "\n";
+         }
         echo "\n";
-        echo "Pilih nomor untuk mengedit : ";
+        echo "Pilih nomor untuk mengedit : \n";
+        echo "ketik 0 atau enfer untuk kembali ke menu awal : \n";
 
         $edit = trim(fgets(STDIN));
         if ($edit == '0' || $edit == '') {
             return;
         }
 
-        $edit = $edit - 1;
-        if (isset($todolist[$edit])) {
+        $index = (int)$edit - 1;
+        if (isset($this->todolist[$index])) {
+            $idDatabase = $this->todolist[$index]['id'];
             echo "Judul : ";
             $title = trim(fgets(STDIN));
             if ($title == '0' || $title == '') {
@@ -31,11 +33,13 @@ trait EditTrait {
             if ($message == '0' || $message == '') {
                 return;
             }
-            $todolist[$edit]['title'] = $title;
-            $todolist[$edit]['message'] = $message;
+            $sql = "UPDATE todolist SET title = ?, message = ? WHERE id = ?";
+            $statment = $this->db->prepare($sql);
+            $statment->execute([$title, $message, $idDatabase]);
+                echo "UPDATE";
+                sleep(1);
         }
-        echo "Data berhasil diubah.\n";
-        echo "\n";
+
     }
 
 }

@@ -61,11 +61,11 @@ class Todo {
     private function menutodolist() {
         $statment = $this->db->prepare("SELECT * FROM todolist WHERE user_id = ? ORDER BY id ASC");
         $statment->execute([$this->user['id']]);
-        $this->todolist = $statment->fetch(PDO::FETCH_ASSOC);
+        $this->todolist = $statment->fetchAll();
 
         system('cls');
         echo "=====================================\n";
-        echo  "welcomme" . $this->user['name'] . "!\n";
+        echo  "welcomme\n" . $this->user['name'] . "!\n";
         echo "=====================================\n";
 
         echo "LIST : \n" . count($this->todolist) . " data\n";
